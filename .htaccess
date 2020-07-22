@@ -54,3 +54,16 @@ AddType image/webp .webp
  AddOutputFilterByType DEFLATE text/xml
 </IfModule>
 # END DEFLATE COMPRESSION
+
+
+# BEGIN Cache-Control Headers
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header append Cache-Control "max-age=172800, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|svg|mp4|mov|swf|woff|woff2)$">
+    Header set Cache-Control "max-age=1209600, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# END Cache-Control Headers
