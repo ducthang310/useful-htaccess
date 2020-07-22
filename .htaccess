@@ -1,0 +1,28 @@
+# -----BEGIN Serve webp images
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Does browser explicitly support webp?
+RewriteCond %{HTTP_USER_AGENT} Chrome [OR]
+
+# OR Is request from Page Speed
+RewriteCond %{HTTP_USER_AGENT} "Google Page Speed Insights" [OR]
+
+# OR does this browser explicitly support webp
+RewriteCond %{HTTP_ACCEPT} image/webp
+
+# AND does a webp image exists?
+RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
+
+# THEN send the webp image and set the env var webp
+RewriteRule (.+)\.(?:jpe?g|png)$ $1.webp [NC,T=image/webp,E=webp,L]
+
+</IfModule>
+
+<IfModule mod_headers.c>
+Header append Vary Accept env=REDIRECT_webp
+</IfModule>
+
+AddType image/webp .webp
+# -----END Serve webp images
